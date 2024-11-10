@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Registration Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      margin-bottom: 20px;
+    }
+    
+    input[type="submit"] {
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      padding: 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      width: 100%;
+    }
+    
+    input[type="submit"]:hover {
+      background-color: #45a049;
+    }
+    
+    .login-link {
+      text-align: center;
+      margin-top: 20px;
+    }
+    
+    .login-link a {
+      color: #555;
+      text-decoration: none;
+    }
+    
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+  </style>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('#register-form').submit(function(event) {
+        event.preventDefault(); // Prevent default form submission
+        var form = $(this);
+        var url = form.attr('action');
+        var formData = form.serialize(); // Serialize form data
+
+        // Clear any previously displayed errors
+        $('#username_error').text('').hide();
+        $('#end_form_error').text('').hide();
+
+        $.ajax({
+          type: 'POST',
+          url: url,
+          data: formData,
+          success: function(response) {
+            // Handle successful response
+            var message = response["message"]
+            if(message == "Registration successful"){
+                // Redirect to the home page
+                window.location.href = "/";
+            }
+            //not good
+            else if(message == "Username already exists"){
+                console.log(message);
+                $('#username_error').text("Username taken. Please choose another.").show(); // Update the error message element in your HTML
+            }
+            else if(message == "Passwords do not match!"){
+                console.log(message);
+                $('#end_form_error').text(message).show(); // Update the error message element in your HTML
+            }
+          },
+          error: function(xhr, status, error) {
+            // Handle error
+            console.log(error);
+            var errorMessage = xhr.responseText; // Get the error message from the response
+            $('#end_form_error').text(errorMessage).show(); // Update the error message element in your HTML
+          }
+        });
+      });
+    });
+  </script> 
+</head>
+<body>
+  <div class="container">
+    <h2>Registration Form</h2>
+    <form id="register-form">  
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" autocomplete="username" required>
+      <div id="username_error" style="color: red; margin-top: -15px;"></div> <br> <!-- Element to display the error message -->
+      
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+      
+      <label for="confirm-password">Confirm Password:</label>
+      <input type="password" id="confirm-password" name="confirm-password" required>
+      <div id="end_form_error" style="color: red; margin-top: -15px;"></div> <br> <!-- Element to display the error message -->
+      
+      <input type="submit" value="Register">
+      
+      <div class="login-link">
+        <a href="/login">Already have an account? Login!</a>
+      </div>
+
+    </form>
+  </div>
+</body>
+</html>

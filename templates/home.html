@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Home Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    
+    input[type="text"],
+    input[type="number"] {
+      width: 97%;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      margin-bottom: 20px;
+    }
+    
+    input[type="submit"] {
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      padding: 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    
+    .navbar {
+      background-color: #ccc;
+    }
+    
+    .navbar ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .navbar li {
+      flex-grow: 1;
+      text-align: center;
+      margin: 0;
+    }
+    
+    .navbar a {
+      color: #fff;
+      text-decoration: none;
+      padding: 5px 10px;
+    }
+    
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+    
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f9f9f9;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+    }
+
+    .nav-link {
+      display: inline-block;
+      padding: 10px;
+      color: #333;
+      text-decoration: none;
+    }
+    
+    .nav-link:hover {
+      background-color: #f0f0f0;
+      color: #555;
+    }
+    
+    .nav-item {
+      display: inline-block;
+      margin-right: 10px;
+    }
+
+    .nav-item.active .nav-link {
+      background-color: #f0f0f0;
+      color: #555;
+    }
+    
+    .dropdown-content a {
+      color: #333;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+    
+    .dropdown-content a:hover {
+      background-color: #f1f1f1;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+    
+    .username {
+      font-weight: bold;
+    }
+  </style>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    function submitForm() {
+        const form = document.getElementById('tournament-form');
+        
+        // Prevent the default form submission
+        event.preventDefault();
+        
+        // Create a new FormData object and populate it with the form data
+        const formData = new FormData(form);
+        
+        // Clear any previously displayed errors
+        $('#players_error').text('').hide();
+        $('#tournament_name_error').text('').hide();
+        
+        // Send a POST request to the server using Fetch API
+        fetch('/submit-tournament', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+          // Handle successful response
+          var message = data["message"]
+          if(message == "Tournament submitted successfully"){
+              // Redirect to the home page
+              console.log(message);
+              window.location.href = "/select_tournament_fixtures";
+          }
+          //not good
+          else if(message == "Please enter at least two players!" || message == "Please enter unique players" || message == "Please enter at least 4 players for the two-player game!"){
+              console.log(message);
+              $('#players_error').text(message).show(); // Update the error message element in your HTML
+          }
+          else {
+            console.log(message);
+            $('#tournament_name_error').text(message).show(); // Update the error message element in your HTML
+        }
+
+        })
+        .catch(error => {
+          // Handle any errors
+          console.error(error);
+        });
+      }
+      
+
+  </script>
+</head>
+<body>
+  <div class="container">
+    <div class="navbar">
+      <ul>
+        <li class="nav-item">
+          <a href="/" class="nav-link">Create Tournament</a>
+        </li>
+        <li class="nav-item">
+          <a href="/select_tournament_fixtures" class="nav-link">Fixtures/ Results</a>
+        </li>
+        <li class="nav-item">
+          <a href="/select_tournament_table" class="nav-link">Table</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link">
+            <span class="username">John Doe</span>
+          </a>
+          <div class="dropdown-content">
+            <a href="/logout">Logout</a>
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+    
+    <h2>Create Tournament</h2>
+    <form id="tournament-form" onsubmit="submitForm()">
+        <label for="player-names">Player Names (comma-separated):</label>
+        <input type="text" id="player-names" name="player-names" required pattern="^[^&]+$">      
+        <div id="players_error" style="color: red; margin-top: -15px;"></div> <br> <!-- Element to display the error message -->
+
+        <label for="tournament-name">Tournament Name:</label>
+        <input type="text" id="tournament-name" name="tournament-name" required>
+        <div id="tournament_name_error" style="color: red; margin-top: -15px;"></div> <br> <!-- Element to display the error message -->
+
+        <fieldset class="players-per-team">
+          <legend>Players per Team:</legend>
+          <label>
+              <input type="radio" id="one-player" name="players-per-team" value="one-player" checked required>
+              One Player
+          </label>
+          <label>
+              <input type="radio" id="two-players" name="players-per-team" value="two-players" required>
+              Two Players
+          </label>
+      </fieldset><br>
+      
+
+
+      <fieldset class="fixture-type">
+        <legend>Fixture Type:</legend>
+        <label>
+            <input type="radio" id="one-fixture" name="fixture-type" value="one-fixture" checked required>
+            One Fixture
+        </label>
+        <label>
+            <input type="radio" id="home-away" name="fixture-type" value="home-away" required>
+            Home and Away
+        </label>
+    </fieldset><br>
+    
+        
+        <input type="submit" value="Create Tournament">
+    </form>
+
+  <script>
+    // Replace 'John Doe' with the actual username
+    document.querySelector('.username').textContent = '{{ current_user.username }}';
+
+    // Add 'active' class to the selected navigation link
+    $(document).ready(function() {
+      var currentPath = window.location.pathname;
+      $('.nav-link').each(function() {
+        if ($(this).attr('href') === currentPath) {
+          $(this).parent('.nav-item').addClass('active');
+        }
+      });
+    });
+  </script>
+
+  </div>
+</body>
+</html>
