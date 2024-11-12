@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The Tournament Generator is a web tool designed to help manage and track soccer FIFA tournaments. Whether you're hosting a small friendly competition or a larger event, this platform provides an easy and efficient way to set up and track your tournament.
+Tournament Generator is a web tool designed to help manage and track soccer FIFA tournaments. Whether you're hosting a small friendly competition or a larger event, this platform provides an easy and efficient way to set up and track your tournament.
 
 ## Overview
 
