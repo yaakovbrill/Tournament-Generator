@@ -2,11 +2,11 @@
 
 ## Introduction
 
-Tournament Generator is a web tool designed to help manage and track soccer FIFA tournaments. Whether you're hosting a small friendly competition or a larger event, this platform provides an easy and efficient way to set up and track your tournament.
+[Tournament Generator](https://tournament.pythonanywhere.com/) is a web tool designed to help manage and track soccer Fifa tournaments. Whether you're hosting a small friendly competition or a larger event, this platform provides an easy and efficient way to set up and track your tournament.
 
 ## Overview
 
-Visit [Tournament Generator](https://tournament.pythonanywhere.com/), register, and navigate to "Create Tournament". Enter player names, select team sizes (1 or 2 players), and the platform will generate fixtures. Points are tracked automatically. This tool is aimed at organizing and managing soccer FIFA tournaments.
+Visit [Tournament Generator](https://tournament.pythonanywhere.com/), register, and navigate to "Create Tournament". Enter player names, select team sizes (1 or 2 players per team), and the platform will generate the fixtures. Points are tracked automatically.
 
 ## Features
 - **Easy Setup**: Quickly create tournaments with customizable settings. Enter player names separated by commas, tournament name, team size (1 or 2 players), and fixture type (One Fixture or Home and Away).
@@ -16,13 +16,3 @@ Visit [Tournament Generator](https://tournament.pythonanywhere.com/), register, 
 
 ## Languages & Tools
 This tool was developed using **Python**, **SQL**, **Flask**, **JavaScript**, **HTML**, and **CSS**, and is hosted on **PythonAnywhere**. It utilizes both `GET` and `POST` API methods with Flask’s `@app.route` for handling requests.
-
-## Running Locally
-To run this project locally:
-1. Clone the repository.
-2. Use **XAMPP** to set up a local server.
-3. Start XAMPP, then run:
-
-```bash
-python app.py
-```
